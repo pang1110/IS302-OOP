@@ -1,48 +1,60 @@
-#CalilungRRC
-from unicodedata import name
+from product import (Product)
+from inventory_manager import add_product
 
-from student import Student
-from file_handler import save_student, view_students
-import student
-
-def add_student():
-    student_id = input("Enter Student ID: ")
-    name_rrc = input("Enter Name: ")
-    course_rrc = input("Enter Course: ")
-    student_rrc = Student(student_id, name_rrc, course_rrc)
-    save_student(student_rrc)
-    print("Student added successfully")
-def search_student():
-    search_id = input("Enter Student ID to search: ")
+def search_product():
+    product_id = input("Enter Product ID: ")
     try:
-        with open("students.txt", "r") as file:
+        with open("products.txt", "r") as file:
+
             for line in file:
-                student_id, name_rrc, course_rrc = line.strip().split(",")
-                if student_id == search_id:
-                    print(f"Student found - ID: {student_id}, Name: {name_rrc}, Course: {course_rrc}")
-                    return
-            print("Student not found")
+
+              data = line.strip().split(",")
+
+            if data[0] == product_id:
+                print("Product Found:", line)
+                return
+
+        print("Product not found")
+
     except FileNotFoundError:
-        print("No students found.")
-def main():
-    while True:
-        print("\n1. Add Student")
-        print("2. View Students")
-        print("3. Search Student")
-        print("4. Exit")
-        choice = input("Enter your choice: ")
-        if choice == '1':
-            add_student()
-        elif choice == '2':
-            view_students()
-        elif choice == '3':
-            search_student()
-        elif choice == '4':
-            print("Exiting...")
-            break
-        else:
-            print("Invalid choice. Please try again.")
+        print("Inventory file not found")
+
+while True:
+
+    print("\nINVENTORY MANAGEMENT SYSTEM")
+    print("1 Add Product")
+    print("2 View Products")
+    print("3 Search Product")
+    print("4 Exit")
+
+    choice = input("Enter choice: ")
+
+    if choice == "1":
+
+        try:
+
+            product_id = input("Enter Product ID: ")
+            name = input("Enter Product Name: ")
+            price = float(input("Enter Price: "))
+            quantity = int(input("Enter Quantity: "))
+
+            product = Product(product_id, name, price, quantity)
+
+            add_product(product)
+
+            print("Product added successfully")
+
+        except ValueError:
+            print("Invalid input")
 
 
+    elif choice == "3":
+        search_product()
+
+    elif choice == "4":
+        break
+
+    else:
+        print("Invalid option")
 
 
